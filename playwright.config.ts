@@ -24,13 +24,17 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [['html'], ['list'], ['allure-playwright', { outputFolder: 'allure-results' }]],
+  /* Raise timeouts to accommodate headless Firefox latency on the external demo site. */
+  timeout: 60000,
+  expect: { timeout: 15000 },
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
 
     /* Base URL to use in actions like `await page.goto('')`. */
     baseURL: environment.baseURL,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
+    screenshot: 'only-on-failure',
     
   },
 
